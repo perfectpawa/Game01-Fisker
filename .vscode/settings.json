@@ -54,7 +54,14 @@
         "ProjectSettings/": true,
         "UserSettings/": true,
         "temp/": true,
-        "Temp/": true
+        "Temp/": true,
+
+        "*.csproj": true,
+        "*.sln": true,
+        "Packages/": true,
+        "Assets/Scenes": true,
+        "Assets/Sprites": true,
+        
     },
     "dotnet.defaultSolution": "Game01-Fisker.sln"
 }
