@@ -7,7 +7,7 @@ public class Fish : MonoBehaviour
 {
     [SerializeField] private FishSpawner _fishSpawner;
     [SerializeField] private float _moveSpeed = 5f;
-    [SerializeField] private Vector3 _lastMovePoint;
+    [SerializeField] private Transform _lastMovePoint;
 
     private void Awake()
     {
@@ -19,14 +19,14 @@ public class Fish : MonoBehaviour
 
     private void Start()
     {
-        LookAtMovePoint();
+        LookAtMovePoint(_lastMovePoint.position);
     }
 
     private void Update()
     {
         Move();
         // LookAtMovePoint();
-        if (transform.position == _lastMovePoint)
+        if (transform.position == _lastMovePoint.position)
         {
             _fishSpawner.ReturnFishToPool(this);
         }
@@ -35,16 +35,18 @@ public class Fish : MonoBehaviour
 
     private void Move()
     {
-        // transform.position = Vector3.Lerp(transform.position, _lastMovePoint, _moveSpeed * Time.deltaTime);
-        transform.position = Vector3.MoveTowards(transform.position, _lastMovePoint, _moveSpeed * Time.deltaTime);
+        // transform.position = Vector3.Lerp(transform.position, _lastMovePoint.position, _moveSpeed * Time.deltaTime);
+        Vector3 point = Vector3.MoveTowards(transform.position, _lastMovePoint.position, _moveSpeed * Time.deltaTime);
+        LookAtMovePoint(point);
+        transform.position = point;
     }
-    private void LookAtMovePoint(){
-        Vector3 diff = this.transform.position - _lastMovePoint;
+    private void LookAtMovePoint(Vector3 point){
+        Vector3 diff = transform.position - point;
         diff.Normalize();
         float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-        this.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+        transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
     }
-    public void SetMovePoint(Vector3 movePoint)
+    public void SetMovePoint(Transform movePoint)
     {
         _lastMovePoint = movePoint;
     }
