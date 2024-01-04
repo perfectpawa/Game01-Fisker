@@ -5,67 +5,48 @@ using UnityEngine;
 
 public class Fish : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 1f;
-    [SerializeField] private float _turnSpeed = 1f;
-    [SerializeField] private float _turnTime = 1f;
-    [SerializeField] private float _maxTurnAngle = 180f;
-    [SerializeField] private float _minTurnAngle = -180f;
-    [SerializeField] private Transform _movePoint;
-
-
-    [SerializeField] private float turnTimer = 0f;
-    [SerializeField] private bool isCompleteTurn = true;
-    [SerializeField] private float turnAngle;
+    [SerializeField] private FishSpawner _fishSpawner;
+    [SerializeField] private float _moveSpeed = 5f;
+    [SerializeField] private Vector3 _lastMovePoint;
 
     private void Awake()
     {
-        if (_movePoint == null)
+        if (_lastMovePoint == null)
         {
-            _movePoint = transform.Find("MovePoint");
-            Debug.Log("MovePoint is null, set to default");
-        }
+            Debug.LogError( transform.name + "Move point is null", gameObject);
+        }   
+    }
+
+    private void Start()
+    {
+        LookAtMovePoint();
     }
 
     private void Update()
     {
-        IsTurning();
         Move();
-    }
-
-    private void IsTurning()
-    {
-        if (!isCompleteTurn)
+        // LookAtMovePoint();
+        if (transform.position == _lastMovePoint)
         {
-
-            Turn();
-            if (transform.rotation == Quaternion.Euler(0f, 0f, turnAngle))
-            {
-                isCompleteTurn = true;
-            }
-        }
-        else
-        {
-            turnTimer += Time.deltaTime;
-            if (turnTimer >= _turnTime)
-            {
-                isCompleteTurn = false;
-                turnTimer = 0f;
-                turnAngle = Mathf.Round(UnityEngine.Random.Range(_minTurnAngle, _maxTurnAngle));
-            }
+            _fishSpawner.ReturnFishToPool(this);
         }
     }
 
-    private void Turn()
-    {
-        //rotate fish randomly between -180 and 180 degrees using lerping
-        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, 0f, turnAngle), _turnSpeed * Time.deltaTime);
-    }
 
     private void Move()
     {
-        //move fish to move point
-        transform.position = Vector3.MoveTowards(transform.position, _movePoint.position, _moveSpeed * Time.deltaTime);
+        // transform.position = Vector3.Lerp(transform.position, _lastMovePoint, _moveSpeed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, _lastMovePoint, _moveSpeed * Time.deltaTime);
     }
-
-
+    private void LookAtMovePoint(){
+        Vector3 diff = this.transform.position - _lastMovePoint;
+        diff.Normalize();
+        float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+        this.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 90);
+    }
+    public void SetMovePoint(Vector3 movePoint)
+    {
+        _lastMovePoint = movePoint;
+    }
+    
 }
