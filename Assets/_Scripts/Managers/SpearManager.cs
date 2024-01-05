@@ -21,10 +21,19 @@ public class SpearManager : MonoBehaviour
     }
     private void Update()
     {
-        if (!mouseDown)
+        if(GameManager.Instance.GameState != GameState.InGame)
         {
-            _bigSpear.LookAtMouse();
+            return;
         }
+
+        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        {
+            return;
+        }  
+        // if (!mouseDown)
+        // {
+        //     _bigSpear.LookAtMouse();
+        // }
 
         if (Input.GetMouseButtonDown(0) && !mouseDown)
         {

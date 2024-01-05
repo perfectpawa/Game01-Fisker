@@ -11,6 +11,6 @@ public class PauseBtn : BaseBtn
     {
         _pauseCanvas.gameObject.SetActive(true);
         _inGameCanvas.gameObject.SetActive(false);
-        Debug.Log("Pause");
+        GameManager.Instance.ChangeGameState(GameState.Pause);
     }
 }

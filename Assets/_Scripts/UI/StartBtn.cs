@@ -11,6 +11,6 @@ public class StartBtn : BaseBtn
     {
         _mainMenuCanvas.gameObject.SetActive(false);
         _inGameCanvas.gameObject.SetActive(true);
-        Debug.Log("Start");
+        GameManager.Instance.ChangeGameState(GameState.InGame);
     }
 }

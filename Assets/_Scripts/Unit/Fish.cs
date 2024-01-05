@@ -35,7 +35,10 @@ public class Fish : MonoBehaviour
 
     private void Move()
     {
-        // transform.position = Vector3.Lerp(transform.position, _lastMovePoint.position, _moveSpeed * Time.deltaTime);
+        if(Time.timeScale == 0)
+        {
+            return;
+        }
         Vector3 point = Vector3.MoveTowards(transform.position, _lastMovePoint.position, _moveSpeed * Time.deltaTime);
         LookAtMovePoint(point);
         transform.position = point;

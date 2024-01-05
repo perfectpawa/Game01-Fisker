@@ -36,6 +36,7 @@ public class SmallSpear : MonoBehaviour
                 collision.gameObject.SetActive(false);
                 spearManager.spearLanded=true; 
                 Debug.Log("Fish in");
+                GameManager.Instance.Score++;
             }
             else
             {

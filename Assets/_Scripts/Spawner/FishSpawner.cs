@@ -51,4 +51,12 @@ public class FishSpawner : MonoBehaviour
     {
         fish.gameObject.SetActive(false);
     }
+
+    public void ReturnAllFishToPool()
+    {
+        for (int i = 0; i < _pool.Count; i++)
+        {
+            _pool[i].gameObject.SetActive(false);
+        }
+    }
 }

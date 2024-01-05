@@ -11,6 +11,6 @@ public class ResumeBtn : BaseBtn
     {
         _pauseCanvas.gameObject.SetActive(false);
         _inGameCanvas.gameObject.SetActive(true);
-        Debug.Log("Resume");
+        GameManager.Instance.ChangeGameState(GameState.InGame);
     }
 }
