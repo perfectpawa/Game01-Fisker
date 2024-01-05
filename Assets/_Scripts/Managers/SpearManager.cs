@@ -68,7 +68,7 @@ public class SpearManager : MonoBehaviour
         if (_bigSpear.OutOfCamera())
         {
             _bigSpear.gameObject.SetActive(false);
-            _smallSpear.Move();
+            _smallSpear.Move(_destinationPoint.transform);
         }
     }
 }

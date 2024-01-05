@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -8,6 +9,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private FishSpawner _fishSpawner;
     [SerializeField] private BaseText _timeText;
     [SerializeField] private BaseText _scoreText;
+    [SerializeField] private BaseText _highScoreText;
+    [SerializeField] private BaseText _endScoreText;
     [SerializeField] private GameObject _gameEnvironment;
     [SerializeField] private Canvas _mainMenuCanvas;
     [SerializeField] private Canvas _inGameCanvas;
@@ -23,12 +26,14 @@ public class GameManager : Singleton<GameManager>
 
     public void ChangeGameState(GameState newState)
     {
-        if(_gameState == newState) return;
+        if (_gameState == newState) return;
 
         _gameState = newState;
         switch (_gameState)
         {
             case GameState.MainMenu:
+                Debug.Log(PlayerPrefs.GetInt("HighScore", 0));
+                _highScoreText.Text.text = "HIGH SCORE: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
                 _mainMenuCanvas.gameObject.SetActive(true);
                 _gameEnvironment.SetActive(false);
                 break;
@@ -41,6 +46,11 @@ public class GameManager : Singleton<GameManager>
                 _gameEnvironment.SetActive(true);
                 break;
             case GameState.GameOver:
+                if (_score > PlayerPrefs.GetInt("HighScore", 0))
+                {
+                    PlayerPrefs.SetInt("HighScore", _score);
+                }
+                _endScoreText.Text.text = "SCORE: " + _score.ToString();
                 _gameOverCanvas.gameObject.SetActive(true);
                 _gameEnvironment.SetActive(false);
                 _inGameCanvas.gameObject.SetActive(false);
@@ -64,16 +74,19 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         _time = _defaultTime;
+        Debug.Log(PlayerPrefs.GetInt("HighScore", 0));
+        _highScoreText.Text.text = "HIGH SCORE: " + PlayerPrefs.GetInt("HighScore", 0).ToString();
         ChangeGameState(GameState.MainMenu);
     }
 
-    private void Update() {
-        if(_gameState == GameState.InGame)
+    private void Update()
+    {
+        if (_gameState == GameState.InGame)
         {
             _time -= UnityEngine.Time.deltaTime;
             _timeText.Text.text = "Time: " + Mathf.Round(_time).ToString();
             _scoreText.Text.text = "Score: " + _score.ToString();
-            if(_time <= 0)
+            if (_time <= 0)
             {
                 ChangeGameState(GameState.GameOver);
             }
