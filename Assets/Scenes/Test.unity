@@ -923,7 +923,7 @@ MonoBehaviour:
   _gameState: 0
   _score: 0
   _time: 0
-  _defaultTime: 3
+  _defaultTime: 10
 --- !u!1 &289606841
 GameObject:
   m_ObjectHideFlags: 0
@@ -4694,7 +4694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4102864402665479525
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5478,7 +5478,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &5994747205585651175
 MonoBehaviour:
   m_ObjectHideFlags: 0

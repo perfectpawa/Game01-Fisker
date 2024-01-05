@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SpearManager : MonoBehaviour
 {
+    
     public static SpearManager Instance;
     [SerializeField] private BigSpear _bigSpear;
     [SerializeField] private DestinationPoint _destinationPoint;
@@ -21,22 +22,12 @@ public class SpearManager : MonoBehaviour
     }
     private void Update()
     {
-        if(GameManager.Instance.GameState != GameState.InGame)
-        {
-            return;
-        }
 
-        if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-        {
-            return;
-        }  
-        // if (!mouseDown)
-        // {
-        //     _bigSpear.LookAtMouse();
-        // }
 
         if (Input.GetMouseButtonDown(0) && !mouseDown)
         {
+            if(GameManager.Instance.GameState != GameState.InGame) return;
+        
             mouseDown = true;
             _bigSpear.gameObject.SetActive(true);
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
