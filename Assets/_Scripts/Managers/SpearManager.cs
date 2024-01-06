@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SpearManager : MonoBehaviour
 {
     
     public static SpearManager Instance;
+    [SerializeField] private BoxCollider2D _fishZone;
     [SerializeField] private BigSpear _bigSpear;
     [SerializeField] private DestinationPoint _destinationPoint;
     [SerializeField] private SmallSpear _smallSpear;
@@ -22,11 +24,16 @@ public class SpearManager : MonoBehaviour
     }
     private void Update()
     {
-
-
         if (Input.GetMouseButtonDown(0) && !mouseDown)
         {
             if(GameManager.Instance.GameState != GameState.InGame) return;
+
+            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mousePos.z = 0;
+            if (!_fishZone.bounds.Contains(mousePos))
+            {
+                return;
+            }
         
             mouseDown = true;
             _bigSpear.gameObject.SetActive(true);
